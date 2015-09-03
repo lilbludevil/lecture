@@ -18,6 +18,30 @@ In practice, this took X time.  This includes
 Consider the following questions:
 
 1. What is a simple model that would predict this time?
+
+a + nb + mc + md
+
+where:
+a is the time to start the process
+b is the time to count one person
+c is the time to receive a count for one row
+d is the time to add a row count to the sum
+n is the average number of people per row
+m is the number of rows
+
+
 2. What about a simple model to predict time for one person to count?
+
+na + nb
+
+where:
+n is the number of people
+a is the time to count one person
+b is the time to add one to the sum
+
+
 3. How big should the class be before the parallel method takes less time?
 
+Quite large; ballpark estimate greater than 25. This is because in addition
+to the overhead from starting each row operation and receiving the value,
+the arithmetic takes longer using the parallel algorithm as well.

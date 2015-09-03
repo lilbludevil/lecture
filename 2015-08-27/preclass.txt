@@ -8,13 +8,24 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
+    formula for curve: y = 0.1 + 0.9/x
+
+
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
     set up, scheduled, and communicated to p workers at a (serial)
     central server; this takes an overhead time alpha per task.
     What is the theoretically achievable throughput (tasks/time)?
 
+    alpha + tau/p    
+
+
 3.  Under what circumstances is it best to not tune?
+
+    section of code is not bottleneck
+    makes code hard to read
+    takes much human time to implement relative to the savings
+
 
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
@@ -24,4 +35,27 @@
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
     
+    Xeon E5-2620 v3
+    (http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz)
+    x2 FLOPS/FMA
+    x4 FMA/vector FMA: 256 bits per vector/64 bits per double = 4 doubles as
+        FMA inputs per vector
+    x2 vector FMA/cycle: 2 threads per core
+    x6 cores
+    x3.2 GHz
+    = 307.2 gigaflops/sec
+
+    15 * 1,010,880 gigaflops/sec + 8 * 307.2 gigaflops/sec
+    ~= 15.16566 petaflops/sec    
+
+
 5.  What is the approximate theoretical peak flop rate for your own machine?
+
+    Intel Core i5 Haswell
+    (http://ark.intel.com/products/75990/Intel-Core-i5-4258U-Processor-3M-Cache-up-to-2_90-GHz)
+    x2 FLOPS/FMA
+    x4 FMA/vector FMA
+    x2 vector FMA/cycle : 2 threads per core
+    x2 cores
+    x2.9 GHz
+    = 92.8 gigaflops/sec

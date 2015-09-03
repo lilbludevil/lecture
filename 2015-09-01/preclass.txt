@@ -11,12 +11,49 @@ with questions for class!
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
+
+    Xeon Phi Board 
+    (http://ark.intel.com/products/71992/Intel-Xeon-Phi-Coprocessor-5110P-8GB-1_053-GHz-60-core)
+    x2 FLOPS/FMA: multiply and add in one cycle
+    x8 FMA/vector FMA: 512 bits per vector/64 bits per double = 8 doubles as
+        FMA inputs per vector
+    x1 vector FMA/cycle
+    x60 cores
+    x1.053 GHz
+    = 1.01088 petaflops/sec
+
+    Xeon E5-2620 v3
+    (http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz)
+    x2 FLOPS/FMA
+    x4 FMA/vector FMA: 256 bits per vector/64 bits per double = 4 doubles as
+        FMA inputs per vector
+    x2 vector FMA/cycle: 2 threads per core
+    x6 cores
+    x3.2 GHz
+    = 307.2 gigaflops/sec
+
+    15 * 1,010,880 gigaflops/sec + 8 * 307.2 gigaflops/sec 
+    ~= 15.16566 petaflops/sec
+
     
 2.  What is the approximate theoretical peak flop rate for your own machine?
+    
+    Intel Core i5 Haswell
+    (http://ark.intel.com/products/75990/Intel-Core-i5-4258U-Processor-3M-Cache-up-to-2_90-GHz)
+    x2 FLOPS/FMA
+    x4 FMA/vector FMA
+    x2 vector FMA/cycle : 2 threads per core
+    x2 cores
+    x2.9 GHz
+    = 92.8 gigaflops/sec
+    
 
 3.  Suppose there are t tasks that can be executed in a pipeline
     with p stages.  What is the speedup over serial execution of the
     same tasks?
+
+    Speedup in execution time: t/(1+(t-1)/p)   
+
 
 4.  Consider the following list of tasks (assume they can't be pipelined):
 
@@ -30,6 +67,20 @@ with questions for class!
     What is the minimum serial time between starting to compile and having
     a compiled application?  What is the minimum parallel time given
     an arbitrary number of processors?
+
+    Minimum serial time: 1 hr + 0.5 hr + 0.25 hr + 0.5 hr + 0.5 hr = 2.75 hr
+
+    Minimum parallel time: 1 hr + 0.75 hr + 0.5 hr = 2.25 hr
+    -Every task depends on GCC so we execute GCC first (1 hr)
+    -Application depends on every other task so we execute it last (0.5 hr)
+    -After GCC is complete, LAPACK depends on OpenBLAS and OpenMPI and OpenBLAS
+    depend on nothing more, so we can run OpenMPI and OpenBLAS in parallel.
+    -Once OpenBLAS is complete, we can run LAPACK in parallel to OpenMPI.
+    -The running time of the parallel component is max(0.25 hr + 0.5 hr, 0.5 hr)
+    = 0.75 hr.
+
+    
+
 
 5.  Clone the membench repository from GitHub:
 
